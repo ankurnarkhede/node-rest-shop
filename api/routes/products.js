@@ -5,6 +5,8 @@
 const express = require('express');
 const router = express.Router();
 
+
+// handle get requests to products
 router.get('/', function (req, res, next) {
     res.status(200).json({
         message: 'Handling GET requests to /products'
