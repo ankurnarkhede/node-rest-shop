@@ -12,10 +12,10 @@ const orderRouter = require('./api/routes/orders');
 mongoose.connect(
     'mongodb+srv://node-rest-shop:'
     + process.env.MONGO_ATLAS_PW +
-    '@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true',
-    {
-        useMongoClient: true
-    }
+    '@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true'
+    // {
+    //     useMongoClient: true
+    // }
 );
 
 app.use(morgan('dev'));
