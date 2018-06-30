@@ -5,6 +5,8 @@
 const express = require('express');
 const router = express.Router();
 
+const mongoose = require('mongoose');
+const Product = require('../../models/product');
 
 // handle get requests to products
 router.get('/', function (req, res, next) {
@@ -13,31 +15,51 @@ router.get('/', function (req, res, next) {
     });
 });
 
+// post to /
 router.post('/', function (req, res, next) {
-    var product = {
+
+    const product = new Product({
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price
-    };
-
-    res.status(200).json({
-        message: 'Handling POST requests to /products',
-        product: product
     });
+
+// saving to db
+
+    product.save(function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                message: 'Handling POST requests to /products',
+                product: product
+            });
+        }
+    });
+
+
 });
 
 router.get('/:productId', function (req, res, next) {
     const id = req.params.productId;
-    if (id === 'special') {
-        res.status(200).json({
-            message: 'You discovered a specisl id',
-            id: id
-        });
-    }
-    else {
-        res.status(200).json({
-            message: 'You passed an ID'
-        });
-    }
+    console.log(id);
+
+    product.findById(id).exec(function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({error: err});
+        }
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                message: 'Handling GET requests to /products/productId',
+                product: product
+            });
+        }
+    });
+
 });
 
 router.patch('/:productId', function (req, res, next) {
