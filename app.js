@@ -2,11 +2,21 @@ var createError = require('http-errors');
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var app = express();
 
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
+
+mongoose.connect(
+    'mongodb+srv://node-rest-shop:'
+    + process.env.MONGO_ATLAS_PW +
+    '@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true',
+    {
+        useMongoClient: true
+    }
+);
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -44,9 +54,6 @@ app.use(function (error, req, res, next) {
         }
     });
 });
-
-
-
 
 
 module.exports = app;
