@@ -12,6 +12,19 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        "Access-Control-Allow-Origin",
+        "Origin,X-Requested-With,Content-Type,Accept,Authorization"
+    );
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT,POST,PATCH,DELETE,GET');
+        return res.status(200).json({});
+    }
+    next();
+});
+
 app.use('/products', productRouter);
 app.use('/orders', orderRouter);
 
