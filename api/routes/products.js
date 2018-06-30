@@ -14,8 +14,14 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
+    var product = {
+        name: req.body.name,
+        price: req.body.price
+    };
+
     res.status(200).json({
-        message: 'Handling POST requests to /products'
+        message: 'Handling POST requests to /products',
+        product: product
     });
 });
 
