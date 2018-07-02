@@ -20,20 +20,13 @@ router.get('/', function (req, res, next) {
                 });
         }
         if (result) {
-            console.log(result);
             res.status(200).json({
-                message: 'Handling GET requests to /products/',
-                temp: 'temp',
+                message: 'Handling GET requests to /products',
                 product: result
             });
         }
     });
 
-
-
-    res.status(200).json({
-        message: 'Handling GET requests to /products'
-    });
 });
 
 // post to /
@@ -68,9 +61,6 @@ router.post('/', function (req, res, next) {
 
 router.get('/:productId', function (req, res, next) {
     const id = req.params.productId;
-    console.log(id);
-    console.log('finding product');
-
 
     Product.findOne({_id: id}, function (err, result) {
         if (err) {
@@ -95,15 +85,43 @@ router.get('/:productId', function (req, res, next) {
 
 
 router.patch('/:productId', function (req, res, next) {
+
+    const id = req.params.productId;
+    console.log('=========updating product========');
+
+    req.body.forEach(ops, function () {
+        updateOps[ops.propName] = ops.value;
+    });
+    console.log(updateOps);
+
+    Product.update({_id: id}, {$set: updateOps})
+
     res.status(200).json({
         message: 'Updated product',
     });
 });
 
 router.delete('/:productId', function (req, res, next) {
-    res.status(200).json({
-        message: 'Deleted product',
+
+    const id = req.params.productId;
+    console.log('=========deleting product========');
+
+    Product.deleteOne({_id: id}, function (err, result) {
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                msg: "Item deleted",
+                result: result
+            });
+        }
+        else if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        }
     });
+
 });
 
 module.exports = router;
