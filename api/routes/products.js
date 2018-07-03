@@ -125,8 +125,11 @@ router.patch('/:productId', function (req, res, next) {
         if (result) {
             console.log(result);
             res.status(200).json({
-                msg: "product updated",
-                result: result
+                msg: "Product updated",
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/products/' + id
+                }
             })
 
         }
@@ -149,7 +152,7 @@ router.delete('/:productId', function (req, res, next) {
         if (result) {
             console.log(result);
             res.status(200).json({
-                msg: "Item deleted",
+                msg: "Product deleted",
                 result: result
             });
         }
