@@ -63,8 +63,16 @@ router.post('/', function (req, res, next) {
         if (result) {
             console.log(result);
             res.status(200).json({
-                message: 'Handling POST requests to /products',
-                product: product
+                message: 'Creates product in POST /product',
+                product: {
+                    _id: result.id,
+                    name: result.name,
+                    price: result.price,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:3000/products/' + result._id
+                    }
+                }
             });
         }
     });
@@ -75,7 +83,7 @@ router.post('/', function (req, res, next) {
 router.get('/:productId', function (req, res, next) {
     const id = req.params.productId;
 
-    Product.findOne({_id: id}, function (err, result) {
+    Product.findOne({_id: id}, "_id name price", function (err, result) {
         if (err) {
             console.log(err);
             res.status(404).json(
@@ -88,7 +96,12 @@ router.get('/:productId', function (req, res, next) {
             console.log(result);
             res.status(200).json({
                 message: 'Handling GET requests to /products/productId',
-                product: result
+                product: result,
+                request: {
+                    type: 'GET',
+                    description: 'Get all products',
+                    url: 'http://localhost:3000/products/'
+                }
             });
         }
     });
