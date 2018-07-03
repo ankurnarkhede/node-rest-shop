@@ -11,7 +11,7 @@ const Product = require('../../models/product');
 // handle get requests to products
 router.get('/', function (req, res, next) {
 
-    Product.find(function (err, result) {
+    Product.find({}, '_id name price ', function (err, result) {
         if (err) {
             console.log(err);
             res.status(404).json(
@@ -20,10 +20,23 @@ router.get('/', function (req, res, next) {
                 });
         }
         if (result) {
-            res.status(200).json({
-                message: 'Handling GET requests to /products',
-                product: result
-            });
+            const response = {
+                count: result.length,
+                products: result.map(function (item) {
+                    return {
+                        name: item.name,
+                        price: item.price,
+                        _id: item._id,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3000/products/' + item._id
+                        }
+                    }
+
+                })
+            };
+
+            res.status(200).json(response);
         }
     });
 
@@ -87,18 +100,31 @@ router.get('/:productId', function (req, res, next) {
 router.patch('/:productId', function (req, res, next) {
 
     const id = req.params.productId;
+    const updateOps = {};
     console.log('=========updating product========');
 
-    req.body.forEach(ops, function () {
-        updateOps[ops.propName] = ops.value;
-    });
-    console.log(updateOps);
+    for (ops in req.body) {
+        console.log(req.body[ops].value);
+        updateOps[req.body[ops].propName] = req.body[ops].value
+    }
 
-    Product.update({_id: id}, {$set: updateOps})
+    Product.update({_id: id}, {$set: updateOps}, function (err, result) {
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                msg: "product updated",
+                result: result
+            })
 
-    res.status(200).json({
-        message: 'Updated product',
+        }
+        else if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        }
     });
+
 });
 
 router.delete('/:productId', function (req, res, next) {
