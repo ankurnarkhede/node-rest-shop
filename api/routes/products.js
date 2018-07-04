@@ -106,7 +106,6 @@ router.get('/:productId', function (req, res, next) {
         }
     });
 
-
 });
 
 
