@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
                     error: err
                 });
         }
-    });
+    }).populate('product', '_id name price');
 
 });
 
@@ -65,7 +65,7 @@ router.post('/', function (req, res, next) {
                     res.status(201).json({
                         message: 'Creates order in POST /orders',
                         product: {
-                            _id: result.id,
+                            _id: result._id,
                             quantity: result.quantity,
                             product: result.product,
                             request: {
@@ -97,16 +97,53 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/:orderId', function (req, res, next) {
-    res.status(200).json({
-        message: 'Order details',
-        orderId: req.params.orderId
+
+    const id = req.params.orderId;
+
+    Order.findOne({_id: id}, "_id quantity product", function (err, result) {
+
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                message: 'Handling GET requests to /orders/orderId',
+                product: result,
+                request: {
+                    type: 'GET',
+                    description: 'Get all orders',
+                    url: 'http://localhost:3000/orders/'
+                }
+            });
+        }
+        else if (err) {
+            console.log(err);
+            res.status(404).json(
+                {
+                    error: err,
+                    msg: 'No valid entry found for ID: ' + id
+                });
+        }
     });
+
 });
 
 router.delete('/:orderId', function (req, res, next) {
-    res.status(200).json({
-        message: 'Order  deleted',
-        orderId: req.params.orderId
+    const id = req.params.orderId;
+    console.log('=========deleting order========');
+
+    Order.deleteOne({_id: id}, function (err, result) {
+        if (result) {
+            console.log(result);
+            res.status(200).json({
+                msg: "Order deleted",
+                result: result
+            });
+        }
+        else if (err) {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        }
     });
 });
 
