@@ -56,9 +56,10 @@ router.get('/', function (req, res, next) {
                 count: result.length,
                 products: result.map(function (item) {
                     return {
+                        _id: item._id,
                         name: item.name,
                         price: item.price,
-                        _id: item._id,
+                        productImage: item.productImage,
                         request: {
                             type: 'GET',
                             url: 'http://localhost:3000/products/' + item._id
@@ -103,6 +104,7 @@ router.post('/', upload.single('productImage'), function (req, res, next) {
                     _id: result.id,
                     name: result.name,
                     price: result.price,
+                    productImage: result.productImage,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/products/' + result._id
@@ -118,7 +120,7 @@ router.post('/', upload.single('productImage'), function (req, res, next) {
 router.get('/:productId', function (req, res, next) {
     const id = req.params.productId;
 
-    Product.findOne({_id: id}, "_id name price", function (err, result) {
+    Product.findOne({_id: id}, "_id name price productImage", function (err, result) {
         if (err) {
             console.log(err);
             res.status(404).json(
