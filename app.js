@@ -8,6 +8,7 @@ var app = express();
 
 const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
+const userRouter = require('./api/routes/user');
 
 mongoose.connect(
     'mongodb+srv://node-rest-shop:'
@@ -39,6 +40,7 @@ app.use(function (req, res, next) {
 
 app.use('/products', productRouter);
 app.use('/orders', orderRouter);
+app.use('/user', userRouter);
 
 
 // error handler
