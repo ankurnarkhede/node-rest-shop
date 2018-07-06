@@ -64,3 +64,4 @@ typings/
 #custom dirs
 .idea
 uploads/
+nodemon.json
