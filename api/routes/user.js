@@ -89,8 +89,8 @@ router.post('/login', function (req, res, next) {
                     message: "Auth Failed"
                 });
             } else if (result_pass) {
-                const jwt = jwt.sign({
-                        email: result[0].password,
+                const token = jwt.sign({
+                        email: result[0].email,
                         userId: result[0]._id
                     },
                     process.env.JWT_KEY,
@@ -101,7 +101,8 @@ router.post('/login', function (req, res, next) {
 
 
                 return res.status(200).json({
-                    message: "Auth Successful"
+                    message: "Auth Successful",
+                    token: token
                 });
             }
         });
