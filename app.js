@@ -10,14 +10,17 @@ const productRouter = require('./api/routes/products');
 const orderRouter = require('./api/routes/orders');
 const userRouter = require('./api/routes/user');
 
-mongoose.connect(
-    'mongodb+srv://node-rest-shop:'
-    + process.env.MONGO_ATLAS_PW +
-    '@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true'
-    // {
-    //     useMongoClient: true
-    // }
-);
+// mongoose.connect(
+//     'mongodb+srv://node-rest-shop:'
+//     + process.env.MONGO_ATLAS_PW +
+//     '@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true'
+//     // {
+//     //     useMongoClient: true
+//     // }
+// );
+
+mongoose.connect('mongodb+srv://node-rest-shop:node-rest-shop@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true');
+
 mongoose.Promise = global.Promise;
 
 app.use(morgan('dev'));
