@@ -21,6 +21,13 @@ const userRouter = require('./api/routes/user');
 
 mongoose.connect('mongodb+srv://node-rest-shop:node-rest-shop@node-rest-shop-ynkrt.mongodb.net/test?retryWrites=true');
 
+// local mongoose
+// mongoose.connect('mongodb://localhost:27017/MEAN-CRUD-book-library', { promiseLibrary: require('bluebird') })
+//     .then(() =>  console.log('Mongoose connection successful on mongodb://localhost:27017/MEAN-CRUD-book-library'))
+//     .catch((err) => console.error(err));
+
+
+
 mongoose.Promise = global.Promise;
 
 app.use(morgan('dev'));
