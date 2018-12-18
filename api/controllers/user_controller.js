@@ -9,6 +9,9 @@ const Order = require('../../models/order');
 const Product = require('../../models/product');
 const User = require('../../models/user');
 
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 
 exports.user_post_signup = function (req, res, next) {
 
