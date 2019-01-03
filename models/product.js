@@ -2,13 +2,13 @@
  * Created by smartankur4u on 30/6/18.
  */
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const productSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    name: {type: String, required: true},
-    price: {type: Number, required: true},
-    productImage: {type: String}
-});
+  _id: mongoose.Schema.Types.ObjectId,
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  productImage: { type: String }
+})
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', productSchema)
 
